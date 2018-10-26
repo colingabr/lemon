@@ -1,0 +1,5 @@
+#!/usr/bin/env dash
+
+icon clock
+
+date '+%I:%M:%S %p'

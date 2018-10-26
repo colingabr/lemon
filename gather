@@ -1,0 +1,36 @@
+#!/bin/bash
+
+
+dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+juice_dir="${dir}/juice"
+
+source ${dir}/config
+
+export PATH=$PATH:${dir}/util
+
+subscribe_bspwm() {
+  bspc subscribe | ${juice_dir}/desktop > "$bspwm_fifo"
+}
+
+desktop_info() {
+  tail -n1 "$bspwm_fifo"
+}
+
+build_info() {
+  orientation=${1:?}  
+  eval juice='$'$orientation
+
+  output=""
+  for drop in ${juice[@]}; do
+    output="$output $(${juice_dir}/${drop})"
+  done
+  echo "$output"
+}
+
+subscribe_bspwm &
+
+while :; do
+  info="%{l} $(build_info left) %{c} $(desktop_info) %{r} $(build_info right)"
+  echo "$info" >> "$lemon_fifo"
+done
+

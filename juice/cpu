@@ -1,0 +1,14 @@
+#!/bin/sh
+
+icon cpu
+
+#total=$(ps -eo pcpu | grep -vE '^\s*(0.0|%CPU)' |tr '\n' '+'|sed 's/+$//')
+#result=$(echo "$total" | bc)
+#ps -eo pcpu | awk 'BEGIN {sum=0.0f} {sum+=$1} END {print sum}'
+
+usr=$(mpstat -o JSON | jq '.sysstat.hosts[0].statistics[0]["cpu-load"][0].usr')
+sys=$(mpstat -o JSON | jq '.sysstat.hosts[0].statistics[0]["cpu-load"][0].sys')
+
+echo $(echo "scale=2; ($usr + $sys)" | bc)%
+
+#printf "%.0f\n" "$(echo "$result / 4" | bc)"

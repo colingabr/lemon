@@ -1,0 +1,4 @@
+#!/usr/bin/env dash
+
+icon sound
+echo $(ponymix get-volume)\%

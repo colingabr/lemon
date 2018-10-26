@@ -1,0 +1,13 @@
+#!/usr/bin/env dash
+
+icon cloud
+
+weather_url="https://openweathermap.org/data/2.5/weather\?q=Seattle,us\&appid=b6907d289e10d714a6e88b30761fae22"
+
+data=$(curl -sX GET "$weather_url")
+temp_c=$(echo "$data" | jq .main.temp)
+temp_f=$(echo "$temp_c * 9 / 5 + 32" | bc)
+
+status=$(echo "$data" |  jq -r '.weather[0].main')
+
+echo "$temp_f"° "$status"

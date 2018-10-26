@@ -1,0 +1,15 @@
+#!/bin/bash
+
+icon memory
+
+t=$(awk '/MemTotal/{print $2}' /proc/meminfo)
+f=$(awk '/MemFree/{print $2}'  /proc/meminfo)
+b=$(awk '/^Buffers/{print $2}' /proc/meminfo)
+c=$(awk '/^Cached/{print $2}'  /proc/meminfo)
+
+megabytes=$(echo $(echo "($t - $f - $c - $b) / 1000" | bc))
+if (( "$megabytes" > 1023 )); then
+  echo $(echo "scale=2; $megabytes / 1024" | bc)G
+else
+  echo ${megabytes}M
+fi

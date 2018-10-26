@@ -1,0 +1,13 @@
+#!/bin/bash
+
+l_font_main="Hermit-10"
+l_font_icon_main="Font Awesome 5 Free Solid-11"
+l_font_icon_fallback="Font Awesome 5 Free-Regular-400-08"
+
+lemon_fifo="/tmp/lemon-fifo"
+bspwm_fifo="/tmp/bspwm-fifo"
+
+left="date cpu memory weather"
+center=""
+right="kubectx volume battery clock"
+

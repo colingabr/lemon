@@ -13,7 +13,7 @@ subscribe_bspwm() {
 }
 
 desktop_info() {
-  tail -n1 "$bspwm_fifo"
+  tail -n1 "$bspwm_fifo" >> "$lemon_fifo"
 }
 
 build_info() {
@@ -22,15 +22,19 @@ build_info() {
 
   output=""
   for drop in ${juice[@]}; do
-    output="$output $(${juice_dir}/${drop})"
+    echo ${drop^^} $(${juice_dir}/${drop}) >> "$lemon_fifo"
+    sleep 1
   done
-  echo "$output"
 }
 
 subscribe_bspwm &
 
 while :; do
-  info="%{l} $(build_info left) %{c} $(desktop_info) %{r} $(build_info right)"
-  echo "$info" >> "$lemon_fifo"
-done
+  build_info left &
+  desktop_info &
+  build_info right &
+  sleep 1
+done &
+
+tail -f "$lemon_fifo" | "${dir}/format" | lemonbar -o 0 -f "$l_font_main" -o -9 -f "$l_font_icon_main" -f "$l_font_icon_fallback" -u 2 -p
 

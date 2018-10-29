@@ -1,0 +1,85 @@
+#!/bin/bash
+
+dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source ${dir}/config
+
+export PATH=$PATH:${dir}/util
+
+construct_right() {
+  output=""
+  for drop in ${right[@]}; do
+    eval value='$'$drop
+    output="$output $value"
+  done
+  echo "%{r} $output"
+}
+
+construct_left() {
+  output=""
+  for drop in ${left[@]}; do
+    eval value='$'$drop
+    output="$output $value"
+  done
+  echo "%{l} $output"
+}
+
+get_token_length() {
+  echo $1 | wc -c
+}
+
+while read -r drop; do
+  token_len=$(get_token_length $drop)
+  case "$drop" in
+    BATTERY*)
+      battery=$(cut -c "$token_len"- <<< "$drop")
+      ;;
+    BSPWM*)
+      bspwm=$(cut -c "$token_len"- <<< "$drop")
+      ;;
+    CLOCK*)
+      clock=$(cut -c "$token_len"- <<< "$drop")
+      ;;
+    COUNTER*)
+      counter=$(cut -c "$token_len"- <<< "$drop")
+      ;;
+    CPU*)
+      cpu=$(cut -c "$token_len"- <<< "$drop")
+      ;;
+    DATE*)
+      date=$(cut -c "$token_len"- <<< "$drop")
+      ;;
+    DESKTOP*)
+      desktop=$(cut -c "$token_len"- <<< "$drop")
+      ;;
+    GITHUB*)
+      github=$(cut -c "$token_len"- <<< "$drop")
+      ;;
+    KUBECTX*)
+      kubectx=$(cut -c "$token_len"- <<< "$drop")
+      ;;
+    MAIL*)
+      mail=$(cut -c "$token_len"- <<< "$drop")
+      ;;
+    MEMORY*)
+      memory=$(cut -c "$token_len"- <<< "$drop")
+      ;;
+    NETWORK*)
+      network=$(cut -c "$token_len"- <<< "$drop")
+      ;;
+    TIME*)
+      time=$(cut -c "$token_len"- <<< "$drop")
+      ;;
+    TITLE*)
+      title=$(cut -c "$token_len"- <<< "$drop")
+      ;;
+    VOLUME*)
+      volume=$(cut -c "$token_len"- <<< "$drop")
+      ;;
+    WEATHER*)
+      weather=$(cut -c "$token_len"- <<< "$drop")
+      ;;
+  esac
+  echo $(construct_left) $(construct_right) 
+done
+
+

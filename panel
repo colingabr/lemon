@@ -1,9 +1,0 @@
-#!/bin/bash
-
-dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-source ${dir}/config
-
-export PATH=$PATH:${dir}/util
-
-tail -f "$lemon_fifo" | lemonbar -o 0 -f "$l_font_main" -o -9 -f "$l_font_icon_main" -f "$l_font_icon_fallback" -u 2 -p
-

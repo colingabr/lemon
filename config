@@ -9,5 +9,6 @@ bspwm_fifo="/tmp/bspwm-fifo"
 
 left="date cpu memory weather"
 center=""
-right="kubectx volume battery clock"
+#right="kubectx volume battery clock"
+right="battery clock"
 

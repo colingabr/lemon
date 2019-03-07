@@ -1,0 +1,6 @@
+#!/bin/bash
+
+killall gather
+killall lemonbar
+killall format
+

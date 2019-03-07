@@ -1,3 +1,13 @@
 #!/bin/bash
 
-kubectl config current-context
+context=$(kubectl config current-context)
+
+if [[ "$context" == "azq-prod" ]]; then
+  icon prod
+elif [[ "$context" == "azq-beta" ]]; then
+  icon beta
+elif [[ "$context" == "azq-alpha" ]]; then
+  icon alpha
+fi
+
+echo "$context" | cut -d '-' -f 2

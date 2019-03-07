@@ -10,29 +10,32 @@ fi
 
 case $1 in
 # awesome, siji, ionic.
-desktop)  icon='f108 e1d7 f380';;
-battery)  icon='f240 e1fe f113';;
-cloud)    icon='f6c3 e22b f12b';;
-#cloud)    icon='f0c2 e22b f12b';;
-clock)    icon='f017 f017 f017';;
-cpu)      icon='f5dc f5dc f5dc';;
-date)     icon='f073 f073 f073';;
-file)     icon='f15c e1ed f12e';;
-folder)   icon='f07c e1d9 f139';;
-lock)     icon='f023 e029 f458';;
-logoff)   icon='f08b e157 f29f';;
-mail)     icon='f0e0 e072 f132';;
-memory)   icon='f037 f2a1 f2a1';;
-music)    icon='f025 e04d f192';;
-next)     icon='f050 e09c f223';;
-pause)    icon='f04c e09b f478';;
-play)     icon='f04b e058 f488';;
-prev)     icon='f049 e096 f222';;
-rotate)   icon='f01e e1c0 f201';;
-shutdown) icon='f011 e00d f2a9';;
-sound)    icon='f028 e05d f259';;
-up)       icon='f062 e060 f10c';;
-world)    icon='ff0a e1a0 f4d3';;
+alpha)    icon='f51a';;
+beta)     icon='f135';;
+prod)     icon='f54c';;
+snow)     icon='f2dc';;
+desktop)  icon='f108';;
+battery)  icon='f240';;
+cloud)    icon='f6c3';;
+clock)    icon='f017';;
+cpu)      icon='f5d2';;
+date)     icon='f073';;
+file)     icon='f15c';;
+folder)   icon='f07c';;
+lock)     icon='f023';;
+logoff)   icon='f08b';;
+mail)     icon='f0e0';;
+memory)   icon='f037';;
+music)    icon='f025';;
+next)     icon='f050';;
+pause)    icon='f04c';;
+play)     icon='f04b';;
+prev)     icon='f049';;
+rotate)   icon='f01e';;
+shutdown) icon='f011';;
+sound)    icon='f028';;
+up)       icon='f062';;
+world)    icon='ff0a';;
 window)   icon='f2d0';;
 linux)    icon='f17c';;
 github)   icon='f09b';;
@@ -41,13 +44,6 @@ esac
 
 iconfont=awesome
 
-case $iconfont in
-awesome) index=1;;
-siji)    index=2;;
-ionic)   index=3;;
-*) exit 1;;
-esac
+icon_result="$(uchar $(echo $icon))"
 
-icon_result="$(uchar $(echo $icon | cut -d ' ' -f$index))"
-
-env printf "$icon_result"
+env printf "$icon_result "

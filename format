@@ -1,9 +1,13 @@
 #!/bin/bash
 
+set +x
+
 dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source ${dir}/config
 
 export PATH=$PATH:${dir}/util
+
+idx=$1
 
 construct_right() {
   output=""
@@ -33,9 +37,9 @@ while read -r drop; do
     BATTERY*)
       battery=$(cut -c "$token_len"- <<< "$drop")
       ;;
-    BSPWM*)
-      bspwm=$(cut -c "$token_len"- <<< "$drop")
-      ;;
+    #BSPWM*)
+    #  bspwm=$(cut -c "$token_len"- <<< "$drop")
+    #  ;;
     CLOCK*)
       clock=$(cut -c "$token_len"- <<< "$drop")
       ;;
@@ -81,5 +85,4 @@ while read -r drop; do
   esac
   echo $(construct_left) $(construct_right) 
 done
-
 

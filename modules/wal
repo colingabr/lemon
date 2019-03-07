@@ -1,0 +1,10 @@
+
+set -e -x
+
+color_file="$HOME/.cache/wal/colors.json"
+color_data=$(cat "$color_file")
+
+background=$(jq -r .special.background <<< "$color_data")
+foreground=$(jq -r .special.foreground <<< "$color_data")
+
+set +x

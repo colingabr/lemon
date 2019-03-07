@@ -1,20 +1,19 @@
 #!/bin/bash
 
+killall format
+killall lemonbar
 
 dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 juice_dir="${dir}/juice"
 
 source ${dir}/config
+source ${dir}/modules/bspwm
+source ${dir}/modules/wal
+
+echo "foreground: $foreground"
+echo "background: $background"
 
 export PATH=$PATH:${dir}/util
-
-subscribe_bspwm() {
-  bspc subscribe | ${juice_dir}/desktop > "$bspwm_fifo"
-}
-
-desktop_info() {
-  tail -n1 "$bspwm_fifo" >> "$lemon_fifo"
-}
 
 build_info() {
   orientation=${1:?}  
@@ -27,14 +26,21 @@ build_info() {
   done
 }
 
-subscribe_bspwm &
-
 while :; do
   build_info left &
-  desktop_info &
+  #desktop_info &
   build_info right &
   sleep 1
 done &
 
-tail -f "$lemon_fifo" | "${dir}/format" | lemonbar -o 0 -f "$l_font_main" -o -9 -f "$l_font_icon_main" -f "$l_font_icon_fallback" -u 2 -p
+sleep 1
+
+idx=0
+for monitor in $(list_monitors); do
+  tail -f "$lemon_fifo" \
+    | "${dir}/format" "$idx" \
+    | lemonbar -o 0 -f "$l_font_main" -o -9 -f "$l_font_icon_main" -f "$l_font_icon_fallback" -u 2 -p -B "$background" -F "$foreground" &
+
+  idx=$(echo "$idx" + 1 | bc)
+done
 

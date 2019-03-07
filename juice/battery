@@ -4,10 +4,10 @@
 BATC=/sys/class/power_supply/BAT0/capacity
 BATS=/sys/class/power_supply/BAT0/status
 
-if [ -f $BATC ]; then
+if [ -f "$BATC" ]; then
   icon battery
 	[ "`cat $BATS`" = "Charging" ] && echo -n '+' # || echo -n '-'
-	cat $BATC
+	[ "`cat $BATS`" = "Full" ] && echo -n "100" || cat $BATC
 else
 	# no battery information found.
 	# TODO: plugged in icon if full

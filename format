@@ -18,6 +18,15 @@ construct_right() {
   echo "%{r} $output"
 }
 
+construct_center() {
+  output=""
+  for drop in ${center[@]}; do
+    eval value='$'$drop
+    output="$output $value"
+  done
+  echo "%{c} $output"
+}
+
 construct_left() {
   output=""
   for drop in ${left[@]}; do
@@ -83,6 +92,6 @@ while read -r drop; do
       weather=$(cut -c "$token_len"- <<< "$drop")
       ;;
   esac
-  echo $(construct_left) $(construct_right) 
+  echo $(construct_left) $(construct_center) $(construct_right) 
 done
 

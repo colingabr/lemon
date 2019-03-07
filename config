@@ -6,7 +6,6 @@ l_font_icon_fallback="Font Awesome 5 Free-Regular-400-08"
 
 lemon_fifo="/tmp/lemon-fifo"
 
-#left="date cpu memory"
 left="date cpu memory weather"
 center="desktop"
 right="kubectx volume battery clock"

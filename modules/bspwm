@@ -3,6 +3,7 @@
 this_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 bspwm_fifo="/tmp/bspwm-fifo"
+bspwm_lemon_fifo="/tmp/bspwm-lemon.fifo"
 source ${this_dir}/../config
 
 list_monitors() {
@@ -14,5 +15,8 @@ set_config() {
 }; set_config
 
 subscribe_bspwm() {
-  bspc subscribe | ${juice_dir}/desktop > ~/fifo
+  bspc subscribe desktop_focus | while read mesg; do
+    echo "DESKTOP" $(${juice_dir}/desktop <<< "$mesg") >> "/tmp/lemon-fifo"
+  done
 }; subscribe_bspwm &
+

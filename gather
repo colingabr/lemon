@@ -36,11 +36,14 @@ done &
 sleep 1
 
 idx=0
+offset=0
 for monitor in $(list_monitors); do
+  width=$(get_monitor_width "$monitor")
   tail -f "$lemon_fifo" \
     | "${dir}/format" "$idx" \
-    | lemonbar -o 0 -f "$l_font_main" -o -9 -f "$l_font_icon_main" -f "$l_font_icon_fallback" -u 2 -p -B "$background" -F "$foreground" &
+    | lemonbar -o 0 -f "$l_font_main" -o -9 -f "$l_font_icon_main" -f "$l_font_icon_fallback" -u 2 -p -B "$background" -F "$foreground" -g "$width"+"$offset" &
 
   idx=$(echo "$idx" + 1 | bc)
+  offset=$(echo "$offset" + "$width" | bc)
 done
 

@@ -3,26 +3,29 @@
 o="x"
 e="-"
 
+#o=$(icon heartfull)
+#e=$(icon circle)
+
 while read -r line; do
   desk=$(awk '{print $3}' <<< "$line")
   case "$desk" in
     0x00C00004)
-      echo "[$o] [$e] [$e] [$e] [$e] [$e]"
+      echo "$o $e $e $e $e $e"
       ;;
     0x00C00005)
-      echo "[$e] [$o] [$e] [$e] [$e] [$e]"
+      echo "$e $o $e $e $e $e"
       ;;
     0x00C00006)
-      echo "[$e] [$e] [$o] [$e] [$e] [$e]"
+      echo "$e $e $o $e $e $e"
       ;;
     0x00C00007)
-      echo "[$e] [$e] [$e] [$o] [$e] [$e]"
+      echo "$e $e $e $o $e $e"
       ;;
     0x00C00008)
-      echo "[$e] [$e] [$e] [$e] [$o] [$e]"
+      echo "$e $e $e $e $o $e"
       ;;
     0x00C00009)
-      echo "[$e] [$e] [$e] [$e] [$e] [$o]"
+      echo "$e $e $e $e $e $o"
       ;;
     *)
       echo "invalid"

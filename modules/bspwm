@@ -10,6 +10,11 @@ list_monitors() {
   bspc query --monitors --names
 };
 
+get_monitor_width() {
+  monitor=${1:?}
+  bspc query -m "$monitor" -T | jq .rectangle.width
+}
+
 set_config() {
   bspc config top_padding $top_padding
 }; set_config

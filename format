@@ -92,6 +92,6 @@ while read -r drop; do
       weather=$(cut -c "$token_len"- <<< "$drop")
       ;;
   esac
-  echo $(construct_left) $(construct_center) $(construct_right) 
+  echo %{S${idx}} $(construct_left) $(construct_center) $(construct_right) 
 done
 

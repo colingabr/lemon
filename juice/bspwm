@@ -2,8 +2,8 @@
 
 set -e
 
-empty_workspace='[ ]'
-focus_workspace='[•]'
+emp='[ ]'
+foc='[•]'
 
 monitor=${1:?}
 data=$(bspc query -m "$monitor" -T)
@@ -14,24 +14,31 @@ find_focused_idx() {
   jq -r .name <<< "$focused" | awk -F 'x' '{print $2}'
 }
 
-find_workspace_len() {
-  echo $(jq -r '.desktops | last | .name' <<< "$data" | awk -F 'x' '{print $2}') "+ 1" | bc
-}
-
-n_empty_workpaces() {
-  n=${1:?}
-  yes "$empty_workspace" | head -n "$n" | awk NF=NF RS=
-}
-
-focused_workspace() {
-  echo "$focus_workspace"
-}
-
 render() {
   idx=$(find_focused_idx)
-  len=$(find_workspace_len)
-  echo $(n_empty_workpaces "$idx") $(focused_workspace) $(n_empty_workpaces `echo "$len" - "$idx" - 1 | bc`)
+  case "$idx" in
+    0)
+      echo "$foc $emp $emp $emp $emp $emp"
+      ;;
+    1)
+      echo "$emp $foc $emp $emp $emp $emp"
+      ;;
+    2)
+      echo "$emp $emp $foc $emp $emp $emp"
+      ;;
+    3)
+      echo "$emp $emp $emp $foc $emp $emp"
+      ;;
+    4)
+      echo "$emp $emp $emp $emp $foc $emp"
+      ;;
+    5)
+      echo "$emp $emp $emp $emp $emp $foc"
+      ;;
+    *)
+      echo "invalid"
+      ;;
+  esac
 }
 
-focused_idx=$(find_focused_idx)
-render "$focused_idx"
+render

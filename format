@@ -7,7 +7,8 @@ source ${dir}/config
 
 export PATH=$PATH:${dir}/util
 
-idx=$1
+idx=${1:?}
+monitor=${2:?}
 
 construct_right() {
   output=""
@@ -46,9 +47,9 @@ while read -r drop; do
     BATTERY*)
       battery=$(cut -c "$token_len"- <<< "$drop")
       ;;
-    #BSPWM*)
-    #  bspwm=$(cut -c "$token_len"- <<< "$drop")
-    #  ;;
+    BSPWM*)
+      bspwm=$(sed "s/$monitor //g" <<< "$drop" | cut -c "$token_len"-)
+      ;;
     CLOCK*)
       clock=$(cut -c "$token_len"- <<< "$drop")
       ;;
@@ -62,7 +63,7 @@ while read -r drop; do
       date=$(cut -c "$token_len"- <<< "$drop")
       ;;
     DESKTOP*)
-      desktop=$(cut -c "$token_len"- <<< "$drop")
+      desktop=$(sed "s/$monitor //g" <<< "$drop" | cut -c "$token_len"-)
       ;;
     GITHUB*)
       github=$(cut -c "$token_len"- <<< "$drop")

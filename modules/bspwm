@@ -19,9 +19,14 @@ set_config() {
   bspc config top_padding $top_padding
 }; set_config
 
+
+# ignore the mesg from bspc subscribe - opt to use the query tree
+# functionality because JSON is easier to parse
 subscribe_bspwm() {
   bspc subscribe desktop_focus | while read mesg; do
-    echo "DESKTOP" $(${juice_dir}/desktop <<< "$mesg") >> "/tmp/lemon-fifo"
+    for mon in $(bspc query --monitors --names); do
+      echo "BSPWM" $mon $(${juice_dir}/bspwm $mon) >> "/tmp/lemon-fifo"
+    done
   done
 }; subscribe_bspwm &
 

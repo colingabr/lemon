@@ -1,3 +1,37 @@
 #!/bin/bash
 
-echo "i'd like a lemonbar"
+set -e
+
+empty_workspace='[ ]'
+focus_workspace='[•]'
+
+monitor=${1:?}
+data=$(bspc query -m "$monitor" -T)
+
+find_focused_idx() {
+  focusedDesktopId=$(jq .focusedDesktopId <<< "$data")
+  focused=$(jq '.desktops[] | select(.id == '"$focusedDesktopId"')' <<< "$data")
+  jq -r .name <<< "$focused" | awk -F 'x' '{print $2}'
+}
+
+find_workspace_len() {
+  echo $(jq -r '.desktops | last | .name' <<< "$data" | awk -F 'x' '{print $2}') "+ 1" | bc
+}
+
+n_empty_workpaces() {
+  n=${1:?}
+  yes "$empty_workspace" | head -n "$n" | awk NF=NF RS=
+}
+
+focused_workspace() {
+  echo "$focus_workspace"
+}
+
+render() {
+  idx=$(find_focused_idx)
+  len=$(find_workspace_len)
+  echo $(n_empty_workpaces "$idx") $(focused_workspace) $(n_empty_workpaces `echo "$len" - "$idx" - 1 | bc`)
+}
+
+focused_idx=$(find_focused_idx)
+render "$focused_idx"

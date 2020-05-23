@@ -1,15 +1,75 @@
 #!/usr/bin/env bash
 
+# Update from external every 60 seconds
+window_duration=60
+weather_cache=/tmp/weather-cache
 
-weather_url="https://openweathermap.org/data/2.5/weather\?q=Seattle,us\&appid=b6907d289e10d714a6e88b30761fae22"
+function load_cache() {
+  cat "$weather_cache"
+}
 
-data=$(curl -sX GET "$weather_url")
+function save_cache() {
+  now=$(date +%s)
+  temp=${1:?}
+  desc=${2:?}
+  inter="{}"
+  inter=$(echo "$inter" | jq 'setpath(["last"]; '"$now"')')
+  inter=$(echo "$inter" | jq 'setpath(["temp"]; "'"$temp"'")')
+  final=$(echo "$inter" | jq 'setpath(["desc"]; "'"$desc"'")')
+  echo "$final" > "$weather_cache"
+}
 
-if [[ "$data" != "" ]]; then
-  icon cloud
-  temp_c=$(echo "$data" | jq .main.temp)
-  temp_f=$(echo "$temp_c * 9 / 5 + 32" | bc)
-  
-  status=$(echo "$data" |  jq -r '.weather[0].main')
-  echo "$temp_f"° "$status"
+function get_city() {
+  ip_json=$(curl -s ifconfig.co/json)
+  jq -r .city <<< "$ip_json"
+}
+
+function get_weather() {
+  city=${1:?}
+  weather_data=$(curl -s wttr.in/${city}?format=j1 | jq -r .current_condition[])
+  temp=$(jq -r .temp_F <<< "$weather_data")
+  desc=$(jq -r .weatherDesc[].value <<< "$weather_data" | tr '[:upper:]' '[:lower:]')
+  inter=$(echo "{}" | jq 'setpath(["temp"]; "'"$temp"'")')
+  final=$(echo "$inter" | jq 'setpath(["desc"]; "'"$desc"'")')
+  echo "$final"
+}
+
+function window_elapsed() {
+  cache=$(load_cache)
+  last=$(jq -r .last <<< "$cache")
+  now=$(date +%s)
+  elapsed=$(echo "$now - $last" | bc)
+  if [ "$elapsed" -gt "$window_duration" ]; then
+    return
+  else
+    false
+  fi
+}
+
+#
+# If the cache doesn't exist or the window duration has elapsed, create/update the cache
+#
+if [ ! -e "$weather_cache" ] || window_elapsed; then
+  city=$(get_city)
+  # This should account for drop in network connection as well
+  if [[ "$city" != "null" ]] && [[ "$city" != "" ]]; then
+    weather=$(get_weather "$city")
+    temp=$(jq -r .temp <<< "$weather")
+    desc=$(jq -r .desc <<< "$weather")
+    save_cache "$temp" "$desc"
+  fi
 fi
+
+cache=$(load_cache)
+temp=$(jq -r .temp <<< "$cache")
+desc=$(jq -r .desc <<< "$cache")
+
+#echo "desc: $desc"
+
+case "$desc" in
+  "light rain")        icon cloud-rain;;
+  "partly cloudy")     icon cloud-sun;;
+  *) echo -n "<>"
+esac
+
+echo "$temp"

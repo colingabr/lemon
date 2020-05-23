@@ -4,10 +4,16 @@
 window_duration=60
 weather_cache=/tmp/weather-cache
 
+# 
+# Load the cache json file
+#
 function load_cache() {
   cat "$weather_cache"
 }
 
+#
+# Serialize current timestamp, temperature and description to json and then write them to the cache
+#
 function save_cache() {
   now=$(date +%s)
   temp=${1:?}
@@ -19,11 +25,17 @@ function save_cache() {
   echo "$final" > "$weather_cache"
 }
 
+#
+# Make a request to get external IPs configuration (obviously this will modify your weather data if you're using a VPN!)
+#
 function get_city() {
   ip_json=$(curl -s ifconfig.co/json)
   jq -r .city <<< "$ip_json"
 }
 
+#
+# Get current weather info from wttr.in (https://github.com/chubin/wttr.in)
+#
 function get_weather() {
   city=${1:?}
   weather_data=$(curl -s wttr.in/${city}?format=j1 | jq -r .current_condition[])
@@ -34,6 +46,9 @@ function get_weather() {
   echo "$final"
 }
 
+#
+# Check to see if the window_duration has elapsed
+#
 function window_elapsed() {
   cache=$(load_cache)
   last=$(jq -r .last <<< "$cache")
@@ -64,8 +79,9 @@ cache=$(load_cache)
 temp=$(jq -r .temp <<< "$cache")
 desc=$(jq -r .desc <<< "$cache")
 
-#echo "desc: $desc"
-
+#
+# It's only rainy or cloudy in Seattle 
+#
 case "$desc" in
   "light rain")        icon cloud-rain;;
   "partly cloudy")     icon cloud-sun;;

@@ -1,4 +1,15 @@
-#!/usr/bin/env dash
+#!/bin/bash
 
-icon sound
-echo $(ponymix get-volume)\%
+
+if `ponymix is-muted`; then
+  icon volume-mute
+  echo "MMM"
+else
+  volume=$(ponymix get-volume)
+  if [ "$volume" -ge 50 ]; then
+    icon volume-up
+  else
+    icon volume-down
+  fi
+  echo $(ponymix get-volume)\%
+fi

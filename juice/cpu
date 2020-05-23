@@ -1,6 +1,6 @@
 #!/bin/sh
 
-icon cpu
+icon microchip
 
 #total=$(ps -eo pcpu | grep -vE '^\s*(0.0|%CPU)' |tr '\n' '+'|sed 's/+$//')
 #result=$(echo "$total" | bc)

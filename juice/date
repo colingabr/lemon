@@ -1,5 +1,5 @@
 #!/bin/bash
 
-icon date
+icon calendar-alt
 
 date +'%b %d'

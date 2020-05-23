@@ -3,11 +3,11 @@
 context=$(kubectl config current-context)
 
 if [[ "$context" == "azq-prod" ]]; then
-  icon prod
+  icon book-dead
 elif [[ "$context" == "azq-beta" ]]; then
-  icon beta
+  icon crow
 elif [[ "$context" == "azq-alpha" ]]; then
-  icon alpha
+  icon cat
 fi
 
 echo "$context" | cut -d '-' -f 2

@@ -11,7 +11,7 @@ data=$(bspc query -m "$monitor" -T)
 find_focused_idx() {
   focusedDesktopId=$(jq .focusedDesktopId <<< "$data")
   focused=$(jq '.desktops[] | select(.id == '"$focusedDesktopId"')' <<< "$data")
-  jq -r .name <<< "$focused" | awk -F 'x' '{print $2}'
+  jq -r .name <<< "$focused"
 }
 
 render() {

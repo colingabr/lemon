@@ -1,15 +1,28 @@
-#!/usr/bin/env dash
+#!/bin/bash
 
 
-BATC=/sys/class/power_supply/BAT0/capacity
-BATS=/sys/class/power_supply/BAT0/status
+capacity="/sys/class/power_supply/BAT0/capacity"
+status="$(cat /sys/class/power_supply/BAT0/status)"
 
-if [ -f "$BATC" ]; then
-  icon battery
-	[ "`cat $BATS`" = "Charging" ] && echo -n '+' # || echo -n '-'
-	[ "`cat $BATS`" = "Full" ] && echo -n "100" || cat $BATC
+if [[ "$status" == "Charging" ]]; then
+  icon plug
+  echo $(cat "$capacity")
+elif [ -f "$capacity" ]; then
+  cap=$(cat "$capacity")
+  if [ "$cap" -gt 80 ]; then
+    icon battery-full
+  elif [ "$cap" -gt 60 ]; then
+    icon battery-three-quarters
+  elif [ "$cap" -gt 40 ]; then
+    icon battery-half
+  elif [ "$cap" -gt 20 ]; then
+    icon battery-quarter
+  else 
+    icon battery-empty
+  fi
+  [ "$status" = "Charging" ] && echo -n '+'
+  [ "$status" = "Full" ] && echo -n "100" || echo "$cap"
 else
-	# no battery information found.
-	# TODO: plugged in icon if full
-	echo '+100'
+  icon plug
+  echo '+100'
 fi

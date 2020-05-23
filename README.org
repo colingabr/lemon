@@ -1,0 +1,32 @@
+* Lemon
+
+**Lemon** is a set of scripts that interact with lemonbar to provide a
+customizable status bar for your desktop environment. 
+
+** Motivation
+
+There are many options for status bars out there. Many of them semi-unique
+scripts living in folks' dotfiles built from the ground up that interact with lemonbar. 
+A lot of these implementations were built to get the job done and then
+forgotten about. I used borrowed versions of a few of these for a few
+years but then became frustrated when having to modify them due to lack of
+extensibility and modularity. 
+
+Another option which is great is
+(polybar)[https://github.com/polybar/polybar] - check it out if you haven't
+already. I used it for a while but ran into consistent high CPU usage spikes
+which may or may not be fixed in later versions. I also wanted to move to
+a set up that was more bare bones where I could create a simple script and then
+plug it into the bar via a configuration file.
+
+That's why this project exists
+
+** Example
+
+Here's an example bar for what I'm running day-to-day. 
+
+Here's the configuration I used for this bar. As you can see the `left`,
+`center`, and `right` variables are set with a list of different values. Each
+of these strings reference a script in the `juice` directory. The script when
+called will set a font-awesome icon via `utils/icon` script and then some
+value. 

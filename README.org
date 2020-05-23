@@ -33,7 +33,7 @@ Pretty straight-forward right?
 
 As you can see the =left=, =center=, and =right= variables are set with a list of different values. Each
 of these strings reference a script in the =juice= directory. The script when
-called will set a font-awesome icon via `utils/icon` script and then some
+called will set a font-awesome icon via =utils/icon= script and then some
 value. 
 
 ** :lemon: Juice

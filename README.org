@@ -1,9 +1,9 @@
-* Lemon
+* :lemon: Lemon
 
-**Lemon** is a set of scripts that interact with lemonbar to provide a
+*Lemon* is a set of scripts that interact with lemonbar to provide a
 customizable status bar for your desktop environment. 
 
-** Motivation
+** :lemon: Motivation
 
 There are many options for status bars out there. Many of them semi-unique
 scripts living in folks' dotfiles built from the ground up that interact with lemonbar. 
@@ -13,20 +13,41 @@ years but then became frustrated when having to modify them due to lack of
 extensibility and modularity. 
 
 Another option which is great is
-(polybar)[https://github.com/polybar/polybar] - check it out if you haven't
+[[https://github.com/polybar/polybar][polybar]] - check it out if you haven't
 already. I used it for a while but ran into consistent high CPU usage spikes
-which may or may not be fixed in later versions. I also wanted to move to
-a set up that was more bare bones where I could create a simple script and then
-plug it into the bar via a configuration file.
+which may or may not be fixed in later versions. 
+I also find bash scripting fun so I wanted to move to a set up that was more bare-bones 
+where I could create a simple script and then plug it into the bar via a configuration file.
+awesome
+That's why this project exists.
 
-That's why this project exists
+** :lemon: Example
 
-** Example
+Here's an example bar for what I'm running day-to-day:
+[[file:https://github.com/novcn/lemon/blob/master/screens/ss.png]]
 
-Here's an example bar for what I'm running day-to-day. 
+Here's the configuration I used for this bar:
+[[file:https://github.com/novcn/lemon/blob/master/screens/config-sample.png]]
 
-Here's the configuration I used for this bar. As you can see the `left`,
-`center`, and `right` variables are set with a list of different values. Each
-of these strings reference a script in the `juice` directory. The script when
+Pretty straight-forward right?
+
+As you can see the =left=, =center=, and =right= variables are set with a list of different values. Each
+of these strings reference a script in the =juice= directory. The script when
 called will set a font-awesome icon via `utils/icon` script and then some
 value. 
+
+** :lemon: Juice
+
+If you're going to use this project you'll likely need to write some of your own juice scripts. Luckily that is easy to do. A great example of a functional simple =juice= is the =clock= script:
+#+BEGIN_SRC bash
+#!/bin/bash
+icon clock
+
+date '+%I:%M:%S %p'
+#+END_SRC
+All it does is set the icon to clock - this corresponds to [[https://fontawesome.com/icons/clock?style=solid][font-awesome-clock]] and then prints out a formatted time. 
+
+For a slightly more complex example checkout 
+[[file:https://github.com/novcn/lemon/blob/master/juice/weather][juice/weather]] which requires a network request so it'll cache to the filesystem in case network drops off and also to limit requests to 1 per minute.
+
+

@@ -1,52 +1,62 @@
-#!/usr/bin/env dash
-# neeasade
-# print icon for different symbols in a few different fonts
-# targetting: awesome, siji, ionic.
-# usage: $0  <icon_type/code>
+#!/usr/bin/bash
 
-if ! $p_icon_enable; then
-exit
-fi
 
-case $1 in
-# awesome, siji, ionic.
-alpha)      icon='f51a';;
-beta)       icon='f135';;
-prod)       icon='f54c';;
-snow)       icon='f2dc';;
-desktop)    icon='f108';;
-battery)    icon='f240';;
-cloud)      icon='f6c3';;
-clock)      icon='f017';;
-cpu)        icon='f5d2';;
-date)       icon='f073';;
-file)       icon='f15c';;
-folder)     icon='f07c';;
-lock)       icon='f023';;
-logoff)     icon='f08b';;
-mail)       icon='f0e0';;
-memory)     icon='f037';;
-music)      icon='f025';;
-next)       icon='f050';;
-pause)      icon='f04c';;
-play)       icon='f04b';;
-prev)       icon='f049';;
-rotate)     icon='f01e';;
-shutdown)   icon='f011';;
-sound)      icon='f028';;
-up)         icon='f062';;
-world)      icon='ff0a';;
-window)     icon='f2d0';;
-linux)      icon='f17c';;
-github)     icon='f09b';;
-heartfull)  icon='f004';;
-circle)     icon='f111';;
-github)     icon='f09b';;
-*)          icon="$*";;
-esac
+#case $1 in
+## awesome, siji, ionic.
+#alpha)         icon='f51a';;
+#beta)          icon='f135';;
+#prod)          icon='f54c';;
+#snow)          icon='f2dc';;
+#desktop)       icon='f108';;
+#battery)       icon='f240';;
+#
+##weather
+#day_cloud)     icon='f0c2';;
+#night_cloud)   icon='f6c3';;
+#part_cloud)    icon='f6c4';;
+#sun)           icon='f185';;
+#rain)          icon='f740';;
+#snow)          icon='f2dc';;
+#
+#clock)         icon='f017';;
+#cpu)           icon='f5d2';;
+#date)          icon='f073';;
+#file)          icon='f15c';;
+#folder)        icon='f07c';;
+#lock)          icon='f023';;
+#logoff)        icon='f08b';;
+#mail)          icon='f0e0';;
+#memory)        icon='f037';;
+#music)         icon='f025';;
+#next)          icon='f050';;
+#pause)         icon='f04c';;
+#play)          icon='f04b';;
+#prev)          icon='f049';;
+#rotate)        icon='f01e';;
+#shutdown)      icon='f011';;
+#sound)         icon='f028';;
+#mute)          icon='f6a9';;
+#up)            icon='f062';;
+#world)         icon='ff0a';;
+#window)        icon='f2d0';;
+#linux)         icon='f17c';;
+#github)        icon='f09b';;
+#heartfull)     icon='f004';;
+#circle)        icon='f111';;
+#github)        icon='f09b';;
+#*)             icon="$*";;
+#esac
+#iconfont=awesome
 
-iconfont=awesome
+dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-icon_result="$(uchar $(echo $icon))"
+unicode=$(cat "${dir}/icons.json" | jq -r '.["'"$1"'"]')
 
-env printf "$icon_result "
+if [[ "$unicode" != "null" ]]; then
+  icon_result="$(uchar $(echo $unicode))"
+  env printf "$icon_result "
+else
+  echo "$1"
+fi 
+
+

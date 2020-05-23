@@ -18,7 +18,6 @@ already. I used it for a while but ran into consistent high CPU usage spikes
 which may or may not be fixed in later versions. 
 I also find bash scripting fun so I wanted to move to a set up that was more bare-bones 
 where I could create a simple script and then plug it into the bar via a configuration file.
-awesome
 That's why this project exists.
 
 ** :lemon: Example
@@ -50,4 +49,7 @@ All it does is set the icon to clock - this corresponds to [[https://fontawesome
 For a slightly more complex example checkout 
 [[file:https://github.com/novcn/lemon/blob/master/juice/weather][juice/weather]] which requires a network request so it'll cache to the filesystem in case network drops off and also to limit requests to 1 per minute.
 
+** :lemon: Shoutout
 
+Shoutout to @neeasade for the
+[[https://github.com/neeasade/dotfiles/tree/master/wm/.wm/panel][inspiration]]

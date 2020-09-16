@@ -83,8 +83,12 @@ desc=$(jq -r .desc <<< "$cache")
 # It's only rainy or cloudy in Seattle 
 #
 case "$desc" in
-  "light rain")        icon cloud-rain;;
-  "partly cloudy")     icon cloud-sun;;
+  *sunny)             icon sun;;
+  *rain)              icon cloud-rain;;
+  *cloudy)            icon cloud-sun;;
+  *overcast)          icon cloud;;
+  *thunderstorm)      icon bolt;;
+  *clear)             icon moon;;
   *) echo -n "<>"
 esac
 

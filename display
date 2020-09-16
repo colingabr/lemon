@@ -1,0 +1,42 @@
+#!/bin/bash
+
+dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+juice_dir="${dir}/juice"
+
+source ${dir}/config
+source ${dir}/modules/bspwm
+source ${dir}/modules/wal
+
+export PATH=$PATH:${dir}/util
+
+${dir}/gather
+
+trap "${dir}/killme" EXIT
+
+sleep 1
+
+display_bar() {
+  echo "display bar $$"
+  #killall lemonbar > /dev/null 2>&1
+  echo "setting trap"
+  trap "display_bar" USR1
+  echo "displaying the bar"
+  eval foreground=$(xrdb -query | grep -P '^\*foreground:' | awk '{ print $2 }')
+  eval background=$(xrdb -query | grep -P '^\*background:' | awk '{ print $2 }')
+  echo "foreground: $foreground"
+  echo "background: $background"
+  idx=0
+  offset=0
+  for monitor in $(list_monitors); do
+    width=$(get_monitor_width "$monitor")
+    tail -f "$lemon_fifo" \
+      | "${dir}/format" "$idx" "$monitor" \
+      | lemonbar -n lemon -o 0 -f "$l_font_main" -o -1 -f "$l_font_icon_main" -f "$l_font_icon_fallback" -u 2 -p -B "$background" -F "$foreground" -g "$width"+"$offset" &
+
+    idx=$(echo "$idx" + 1 | bc)
+    offset=$(echo "$offset" + "$width" | bc)
+  done
+  wait
+}
+
+display_bar

@@ -1,6 +1,8 @@
 #!/bin/bash
 
-killall gather
-killall lemonbar
-killall format
+echo "killing all lemon boys"
 
+killall gather   > /dev/null 2>&1
+killall display  > /dev/null 2>&1
+killall lemonbar > /dev/null 2>&1
+killall format   > /dev/null 2>&1

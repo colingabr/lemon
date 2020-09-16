@@ -13,7 +13,7 @@ elif [ -f "$capacity" ]; then
     icon battery-full
   elif [ "$cap" -gt 60 ]; then
     icon battery-three-quarters
-  elif [ "$cap" -gt 40 ]; then
+  elif [ "$cap" -gt 35 ]; then
     icon battery-half
   elif [ "$cap" -gt 20 ]; then
     icon battery-quarter

@@ -1,5 +1,5 @@
 #!/usr/bin/env dash
 
-icon clock
+icon user-clock
 
-date '+%I:%M:%S %p'
+date '+%H:%M:%S'

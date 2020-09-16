@@ -7,6 +7,8 @@ source ${dir}/config
 
 export PATH=$PATH:${dir}/util
 
+#trap "echo 'CONFIG RELOAD'" USR1
+
 idx=${1:?}
 monitor=${2:?}
 
@@ -95,4 +97,3 @@ while read -r drop; do
   esac
   echo %{S${idx}} $(construct_left) $(construct_center) $(construct_right) 
 done
-

@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 color_file="$HOME/.cache/wal/colors.json"
 if [ -a "$color_file" ]; then
   color_data=$(cat "$color_file")

@@ -5,7 +5,6 @@ juice_dir="${dir}/juice"
 
 source ${dir}/config
 source ${dir}/modules/bspwm
-source ${dir}/modules/wal
 
 export PATH=$PATH:${dir}/util
 

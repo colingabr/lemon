@@ -1,0 +1,5 @@
+#!/bin/sh
+
+icon bullseye
+
+bspc query -T -n | jq .client.className -r | cut -c -32

@@ -5,14 +5,14 @@
 #l_font_icon_main="CozetteVector-10"
 #l_font_icon_fallback="CozetteVector-10"
 
-l_font_main="Hermit-08"
+l_font_main="Hermit-16"
 l_font_icon_main="Font Awesome 5 Free Solid-11"
 l_font_icon_fallback="Font Awesome 5 Free-Regular-400-08"
 
 lemon_fifo="/tmp/lemon-fifo"
 
-left="date cpu memory weather"
+left="date cpu memory focus"
 center="bspwm"
-right="kubectx volume battery clock"
+right="kubectx volume clock"
 
 top_padding=32

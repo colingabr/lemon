@@ -7,8 +7,6 @@ source ${dir}/config
 
 export PATH=$PATH:${dir}/util
 
-#trap "echo 'CONFIG RELOAD'" USR1
-
 idx=${1:?}
 monitor=${2:?}
 
@@ -66,6 +64,9 @@ while read -r drop; do
       ;;
     DESKTOP*)
       desktop=$(sed "s/$monitor //g" <<< "$drop" | cut -c "$token_len"-)
+      ;;
+    FOCUS*)
+      focus=$(cut -c "$token_len"- <<< "$drop")
       ;;
     GITHUB*)
       github=$(cut -c "$token_len"- <<< "$drop")

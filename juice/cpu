@@ -1,14 +1,52 @@
-#!/bin/sh
+#!/usr/bin/env bash
+#
+# From /proc/stat
+#
+# This data is aggregated by the kernel since the system first booted
+# The first line is an aggregation of all the cpus
+# The numers identify the amount of work the CPU has spent doing different kinds of work.
+#
+# Work: user    nice system idle     iowait irq    softirq
+#
+# cpu   2843333 5104 751758 57733117 9817   135658 52016    0 0 0
+# cpu0  223415  307  68605  2748040  734    29845  5293     0 0 0
+# cpu1  61850   149  20844  2992373  172    3848   3017     0 0 0
+# ..
+#
+# So to calculate the total usage time percentage:
+#
+# 100 - (idle / sum(user, nice, .., softirq))
+#
+# This will give you a snapshot since system boot.
+#
+# In order to get the usage percent over the last second...
 
 icon microchip
 
-#total=$(ps -eo pcpu | grep -vE '^\s*(0.0|%CPU)' |tr '\n' '+'|sed 's/+$//')
-#result=$(echo "$total" | bc)
-#ps -eo pcpu | awk 'BEGIN {sum=0.0f} {sum+=$1} END {print sum}'
+PROC_STAT="/proc/stat"
 
-usr=$(mpstat -o JSON | jq '.sysstat.hosts[0].statistics[0]["cpu-load"][0].usr')
-sys=$(mpstat -o JSON | jq '.sysstat.hosts[0].statistics[0]["cpu-load"][0].sys')
+get_idle_time() {
+  rg '^cpu ' "$PROC_STAT" \
+    | awk '{print $5}'
+}
 
-echo $(echo "scale=2; ($usr + $sys)" | bc)%
+get_total_time() {
+  rg '^cpu ' "$PROC_STAT" \
+    | awk '{print $2 + $3 + $4 + $5 + $6 + $7 +$8}'
+}
 
-#printf "%.0f\n" "$(echo "$result / 4" | bc)"
+idle1=$(get_idle_time)
+total1=$(get_total_time)
+
+sleep 1
+
+idle2=$(get_idle_time)
+total2=$(get_total_time)
+
+total_diff=$((total2 - total1))
+idle_diff=$((idle2 - idle1))
+
+idle_perc=$(echo "scale=4; $idle_diff / $total_diff * 10000" | bc | awk -F'.' '{print $1}')
+usage_perc=$(echo "scale=2; (10000 - $idle_perc) / 100" | bc)
+
+echo "${usage_perc}%"
